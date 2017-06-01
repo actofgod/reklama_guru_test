@@ -26,6 +26,10 @@ class EmailDomainCommand extends AbstractCommand
             ->addOption(
                 'batch-size', 's', InputOption::VALUE_REQUIRED, 'Количество строк, выгребаемых единовременно', 2000
             )
+            ->addOption(
+                'aggregate-user-duplicates', 'g', InputOption::VALUE_NONE,
+                'Требуется ли учитывать каждое вхождение домена у одного пользователя'
+            )
         ;
     }
 
@@ -42,6 +46,10 @@ class EmailDomainCommand extends AbstractCommand
         if ($input->getOption('clear-previous-state')) {
             $output->writeln('Clear previous state', OutputInterface::VERBOSITY_VERBOSE);
             $processor->clearPreviousState();
+        }
+
+        if ($input->getOption('aggregate-user-duplicates')) {
+            $processor->setAggregateDuplicates(true);
         }
 
         $processor->run();
