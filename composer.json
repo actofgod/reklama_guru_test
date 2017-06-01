@@ -1,0 +1,26 @@
+{
+    "name": "molchanov/reklama_guru_test",
+    "description": "Тестовое задание для reklama.guru",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Molchanov",
+            "email": "define.true.false@gmail.com"
+        }
+    ],
+    "private": true,
+    "autoload": {
+        "psr-4": {
+            "ReklamaGuru\\": "src",
+            "Test\\ReklamaGuru\\": "tests"
+        }
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "require": {
+        "php": "^7.0",
+        "symfony/console": "~3.3"
+    }
+}

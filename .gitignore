@@ -1,0 +1,5 @@
+
+.idea/*
+var/tmp/*
+composer.lock
+vendor/*

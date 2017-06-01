@@ -1,0 +1,8 @@
+{
+  "pdo": {
+    "hostname": "localhost",
+    "dbname": "r_test",
+    "username": "username",
+    "password": "password"
+  }
+}
