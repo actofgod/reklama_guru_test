@@ -159,6 +159,31 @@ class FileByteIterator implements \SeekableIterator
     }
 
     /**
+     * При сериализации запоминаем только имя файла, смещение и тип итератора
+     * @return array Список полей для сериализации
+     */
+    public function __sleep()
+    {
+        return [
+            'sourceFileName',
+            'currentOffset',
+            'mode'
+        ];
+    }
+
+    /**
+     * При десериализации открываем новый файловый дескриптор, вычисляем размер файла и получаем символ в текущей
+     * позиции
+     */
+    public function __wakeup()
+    {
+        $this->openFileDescriptor($this->sourceFileName);
+        $this->fileSize = filesize($this->sourceFileName);
+        fseek($this->fileDescriptor, $this->currentOffset, SEEK_SET);
+        $this->readByte();
+    }
+
+    /**
      * Закрывает файловый декскриптор текущего итератора, делает итератор невалидным
      */
     public function close()

@@ -300,7 +300,7 @@ class FileByteIteratorTest extends TestCase
      */
     public function testLargeFile()
     {
-        $fileSize = 2; // 2MB
+        $fileSize = 1; // 2MB
         // файл размером 2 гигабайта создаётся довольно долго (больше 5 минут)
         // $fileSize = 1024 * 2; // 2GB
 
@@ -318,6 +318,35 @@ class FileByteIteratorTest extends TestCase
             $res = unpack('Lvalue', $tmp);
             self::assertArrayHasKey('value', $res);
             self::assertEquals($expected, $res['value']);
+        }
+    }
+
+    /**
+     * @dataProvider dataProvider
+     * @param string $sourceString
+     * @param bool $codeMode
+     */
+    public function testSerializeUnserialize(string $sourceString, bool $codeMode)
+    {
+        $instance = $this->getTestInstance($sourceString, $codeMode);
+
+        $instance->seek(4);
+        $tmp = serialize($instance);
+        $another = unserialize($tmp);
+
+        for (;$instance->valid(); $instance->next()) {
+            self::assertEquals($instance->key(), $another->key());
+            self::assertEquals($instance->current(), $another->current());
+            $another->next();
+        }
+        $instance->close();
+        self::assertFalse($another->isClosed());
+        foreach ($another as $key => $value) {
+            $char = substr($sourceString, $key, 1);
+            if ($codeMode) {
+                $char = ord($char);
+            }
+            self::assertEquals($char, $value);
         }
     }
 
